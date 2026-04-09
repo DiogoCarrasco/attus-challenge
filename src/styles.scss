@@ -1,1 +1,43 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@include mat.core();
+
+$app-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+  )
+);
+
+html {
+  @include mat.all-component-themes($app-theme);
+}
+
+@tailwind utilities;
+
+:root {
+  --token-primary: #1565c0;
+  --token-avatar-bg: #1976d2;
+  --token-muted: rgba(0, 0, 0, 0.54);
+  --token-error: #d32f2f;
+  --token-error-surface: #fdecea;
+  --token-error-border: #f5c6cb;
+  --token-border: rgba(0, 0, 0, 0.08);
+  --token-page-bg: #f5f5f5;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--token-page-bg);
+}
