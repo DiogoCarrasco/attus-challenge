@@ -41,3 +41,7 @@ body {
   font-family: Roboto, 'Helvetica Neue', Arial, sans-serif;
   background-color: var(--token-page-bg);
 }
+
+html .mat-mdc-dialog-container .mat-mdc-dialog-title + .mat-mdc-dialog-content {
+  padding-top: 1rem;
+}

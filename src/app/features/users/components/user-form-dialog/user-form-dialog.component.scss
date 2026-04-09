@@ -6,6 +6,10 @@
   mat-form-field {
     width: 100%;
   }
+
+  > mat-form-field {
+    margin-bottom: 1rem;
+  }
 }
 
 .phone-row {
