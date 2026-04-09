@@ -1,0 +1,100 @@
+<h2 mat-dialog-title>
+  {{ isEditMode ? 'Editar Usuario' : 'Novo Usuario' }}
+</h2>
+
+<mat-dialog-content>
+  @if (saveError()) {
+    <div class="error-banner" role="alert">{{ saveError() }}</div>
+  }
+
+  <form [formGroup]="form" class="form" novalidate>
+    <mat-form-field appearance="outline">
+      <mat-label>Nome completo</mat-label>
+      <input matInput formControlName="name" placeholder="Ex: Maria da Silva" autocomplete="name" />
+      @if (hasError('name', 'required')) {
+        <mat-error>Nome e obrigatorio.</mat-error>
+      } @else if (hasError('name', 'minlength')) {
+        <mat-error>Nome deve ter pelo menos 2 caracteres.</mat-error>
+      } @else if (hasError('name', 'maxlength')) {
+        <mat-error>Nome nao pode ultrapassar 100 caracteres.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>E-mail</mat-label>
+      <input matInput formControlName="email" type="email" placeholder="exemplo@email.com" autocomplete="email" />
+      @if (hasError('email', 'required')) {
+        <mat-error>E-mail e obrigatorio.</mat-error>
+      } @else if (hasError('email', 'email')) {
+        <mat-error>Informe um e-mail valido.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>CPF</mat-label>
+      <input
+        matInput
+        formControlName="cpf"
+        placeholder="000.000.000-00"
+        maxlength="14"
+        (input)="onCpfInput($event)"
+        autocomplete="off"
+      />
+      @if (hasError('cpf', 'required')) {
+        <mat-error>CPF e obrigatorio.</mat-error>
+      } @else if (hasError('cpf', 'invalidCpf')) {
+        <mat-error>CPF invalido. Verifique o numero informado.</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="phone-row">
+      <div class="phone-field">
+        <mat-form-field appearance="outline">
+          <mat-label>Telefone</mat-label>
+          <input
+            matInput
+            formControlName="phone"
+            placeholder="(00) 00000-0000"
+            maxlength="15"
+            (input)="onPhoneInput($event)"
+            autocomplete="tel"
+          />
+          @if (hasError('phone', 'required')) {
+            <mat-error>Telefone e obrigatorio.</mat-error>
+          } @else if (hasError('phone', 'invalidPhone')) {
+            <mat-error>Telefone invalido.</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="type-field">
+        <mat-form-field appearance="outline">
+          <mat-label>Tipo</mat-label>
+          <mat-select formControlName="phoneType">
+            <mat-option value="mobile">Celular</mat-option>
+            <mat-option value="home">Residencial</mat-option>
+            <mat-option value="work">Comercial</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="isSaving()">Cancelar</button>
+
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="onSubmit()"
+    [disabled]="form.invalid || isSaving()"
+  >
+    @if (isSaving()) {
+      <mat-spinner diameter="20" />
+      Salvando...
+    } @else {
+      {{ isEditMode ? 'Salvar Alteracoes' : 'Criar Usuario' }}
+    }
+  </button>
+</mat-dialog-actions>

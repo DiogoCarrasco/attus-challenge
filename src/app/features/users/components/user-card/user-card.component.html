@@ -1,0 +1,33 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <div mat-card-avatar class="avatar">
+      {{ user().name.charAt(0).toUpperCase() }}
+    </div>
+    <mat-card-title>{{ user().name }}</mat-card-title>
+    <mat-card-subtitle>{{ user().email }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p class="info-row">
+      <mat-icon>badge</mat-icon>
+      <span>{{ user().cpf | cpfMask }}</span>
+    </p>
+    <p class="info-row">
+      <mat-icon>phone</mat-icon>
+      <span>{{ user().phone | phoneMask }}</span>
+      <mat-chip [matTooltip]="phoneTypeLabel()">{{ phoneTypeLabel() }}</mat-chip>
+    </p>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button
+      mat-stroked-button
+      color="primary"
+      (click)="onEdit()"
+      [attr.aria-label]="'Editar ' + user().name"
+    >
+      <mat-icon>edit</mat-icon>
+      Editar
+    </button>
+  </mat-card-actions>
+</mat-card>
