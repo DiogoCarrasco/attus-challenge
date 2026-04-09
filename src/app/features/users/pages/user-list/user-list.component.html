@@ -1,0 +1,65 @@
+<div class="page">
+  <mat-toolbar>
+    <mat-icon>manage_accounts</mat-icon>
+    <span class="toolbar-title">Gerenciamento de Usuarios</span>
+    <span class="flex-1"></span>
+    <button
+      mat-mini-fab
+      color="warn"
+      (click)="openCreateDialog()"
+      matTooltip="Adicionar usuario"
+      aria-label="Adicionar novo usuario"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <main class="content">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Pesquisar por nome</mat-label>
+      <input
+        matInput
+        [formControl]="searchControl"
+        placeholder="Digite o nome do usuario..."
+        autocomplete="off"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    @if (isLoading()) {
+      <app-loading-spinner />
+    } @else if (error()) {
+      <app-error-message [message]="error()!" [retryFn]="retryFn" />
+    } @else if (users().length === 0) {
+      <div class="empty-state" role="status">
+        <mat-icon>group_off</mat-icon>
+        <p class="empty-title">Nenhum usuario encontrado</p>
+        <p class="empty-hint">
+          @if (searchControl.value) {
+            Tente pesquisar por outro nome ou limpe o filtro.
+          } @else {
+            Clique no botao vermelho para adicionar o primeiro usuario.
+          }
+        </p>
+      </div>
+    } @else {
+      <div class="users-grid">
+        @for (user of users(); track user.id) {
+          <app-user-card [user]="user" (edit)="openEditDialog($event)" />
+        }
+      </div>
+
+      @if (totalUsers() > pageSize()) {
+        <mat-paginator
+          [length]="totalUsers()"
+          [pageSize]="pageSize()"
+          [pageIndex]="currentPage() - 1"
+          [pageSizeOptions]="[4, 8, 12]"
+          (page)="onPageChange($event)"
+          showFirstLastButtons
+          aria-label="Paginacao de usuarios"
+        />
+      }
+    }
+  </main>
+</div>
